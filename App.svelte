@@ -12,6 +12,9 @@ const values = zeroes().map(indicatorMap);
 function getRow(grid, ri) { return [grid[ri*3], grid[ri*3+1], grid[ri*3+2]]; }
 function getCol(grid, ci) { return [grid[ci], grid[ci+3], grid[ci+6]]; }
 
+function cellClicked(event) {
+    console.log('clicked:', event.target.getAttribute('data-index'));
+}
 </script>
 
 <div class="container">
@@ -23,7 +26,7 @@ function getCol(grid, ci) { return [grid[ci], grid[ci+3], grid[ci+6]]; }
 
     <div class="grid">
         <div class="row">
-            <Cell index=0 value={values[0]} />
+            <Cell on:click={cellClicked} index=0 value={values[0]} />
             <Cell index=1 value={values[1]} />
             <Cell index=2 value={values[2]} />
         </div>

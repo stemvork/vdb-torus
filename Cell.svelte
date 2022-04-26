@@ -3,7 +3,9 @@ export let index = 0;
 export let value = 0;
 </script>
 
-<div on:click={() => alert(`index: ${index}, value: ${value}`)}
+<!--<div on:click={() => alert(`index: ${index}, value: ${value}`)}-->
+<div on:click
+     data-index={index}
      class="cell">
      {value}
 </div>
