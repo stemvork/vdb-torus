@@ -4,6 +4,7 @@ import Cell from './Cell.svelte';
 // TODO: implement smarter interface
 
 let stateRowCol = true;
+let stateDirection = false;
 let startTime = Date.now();
 let endTime = null;
 
@@ -66,11 +67,21 @@ function setCol(ci, col) {
 /*     values[c2] = temp; */
 /* } */
 function rotRow(ri) {
-    const rotated = getRow(ri).slice(1).concat(getRow(ri)[0]);
+    let rotated;
+    if(stateDirection) {
+        rotated = [getRow(ri)[2]].concat(getRow(ri).slice(0,2));
+    } else {
+        rotated = getRow(ri).slice(1).concat(getRow(ri)[0]);
+    }
     setRow(ri, rotated);
 }
 function rotCol(ci) {
-    const rotated = getCol(ci).slice(1).concat(getCol(ci)[0]);
+    let rotated;
+    if(stateDirection) {
+        rotated = [getCol(ci)[2]].concat(getCol(ci).slice(0,2));
+    } else {
+        rotated = getCol(ci).slice(1).concat(getCol(ci)[0]);
+    }
     setCol(ci, rotated);
 }
 function cellClicked(event) {
@@ -78,6 +89,10 @@ function cellClicked(event) {
     if(stateRowCol) rotRow(Math.floor(cellIndex/3));
     else rotCol(cellIndex%3);
 }
+document.addEventListener('keydown', e => {
+    if(e.key === 'd') stateDirection = !stateDirection;
+    if(e.key === 'o') stateRowCol = !stateRowCol;
+})
 </script>
 
 <div class="container">
@@ -85,6 +100,11 @@ function cellClicked(event) {
         <button on:click={() => stateRowCol = !stateRowCol}>
             {stateRowCol ? "Rotate rows" : "Rotate cols"}
         </button>
+        <button on:click={() => stateDirection = !stateDirection}>
+            {stateDirection ? (stateRowCol ? "Rotate right" : "Rotate down") : (stateRowCol ? "Rotate left" : "Rotate up")}
+        </button>
+        <h3>Press the left button or D to switch direction of the rotation.</h3>
+        <h3>Press the right button or O to switch orientation of the rotation.</h3>
     </div>
 
     <div class="grid" on:click={cellClicked} >
