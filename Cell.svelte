@@ -1,8 +1,12 @@
 <script>
+export let index = 0;
 export let value = 0;
 </script>
 
-<div class="cell">{value}</div>
+<div on:click={() => alert(`index: ${index}, value: ${value}`)}
+     class="cell">
+     {value}
+</div>
 
 <style>
 div.cell {

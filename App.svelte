@@ -23,19 +23,19 @@ function getCol(grid, ci) { return [grid[ci], grid[ci+3], grid[ci+6]]; }
 
     <div class="grid">
         <div class="row">
-            <Cell value={values[0]} />
-            <Cell value={values[1]} />
-            <Cell value={values[2]} />
+            <Cell index=0 value={values[0]} />
+            <Cell index=1 value={values[1]} />
+            <Cell index=2 value={values[2]} />
         </div>
         <div class="row">
-            <Cell value={values[3]} />
-            <Cell value={values[4]} />
-            <Cell value={values[5]} />
+            <Cell index=3 value={values[3]} />
+            <Cell index=4 value={values[4]} />
+            <Cell index=5 value={values[6]} />
         </div>
         <div class="row">
-            <Cell value={values[6]} />
-            <Cell value={values[7]} />
-            <Cell value={values[8]} />
+            <Cell index=6 value={values[6]} />
+            <Cell index=7 value={values[7]} />
+            <Cell index=8 value={values[8]} />
         </div>
     </div>
 </div>
