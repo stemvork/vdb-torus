@@ -1,12 +1,14 @@
 <script>
 export let index = 0;
 export let value = 0;
+$: correct = (parseInt(index) + 1) === value;
 </script>
 
 <!--<div on:click={() => alert(`index: ${index}, value: ${value}`)}-->
 <div on:click
      data-index={index}
-     class="cell">
+     class="cell"
+     class:correct>
      {value}
 </div>
 
@@ -29,5 +31,9 @@ div.cell {
 
 div.cell:hover {
     background-color: #ccc;
+}
+
+div.correct {
+    background-color: #cfc;
 }
 </style>

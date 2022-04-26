@@ -1,13 +1,51 @@
 <script>
 import Cell from './Cell.svelte';
 // TODO: accomodate different grid size, currently: 3x3
+// TODO: implement smarter interface
 
 let stateRowCol = true;
+let startTime = Date.now();
+let endTime = null;
 
 function zeroes() { return Array(9).fill(0); }
 // const indexMap = (_, vi) => vi;
 const indicatorMap = (_, vi) => vi+1;
 const values = zeroes().map(indicatorMap);
+const isCorrect = (v, vi) => vi+1 === v;
+
+function shuffle(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
+// shuffle(values);
+function shuffle2() {
+    const colOps = [...Array(3).keys()].map(i => () => rotCol(i));
+    const rowOps = [...Array(3).keys()].map(i => () => rotRow(i));
+    const allOps = [...colOps, ...rowOps];
+    console.log(allOps);
+    for(let i=0; i<10; i++) {
+        const opIndex = Math.floor(Math.random()*6);
+        console.log('op', opIndex);
+        allOps[opIndex]();
+    }
+}
+shuffle2();
+
+let done = false;
+let doneString = 'Time: ';
+$: done = values.every(isCorrect);
+$: {
+    if(done) {
+        endTime = Date.now();
+        if((endTime-startTime)/(60*1000) < 1)
+            doneString += `${Math.floor((endTime-startTime)/1000)} seconds`;
+        else doneString += `${Math.floor((endTime-startTime)/(60*1000))} minutes and ${Math.floor((endTime-startTime)/1000)} seconds`;
+    }
+}
 
 function getRow(ri) { return [values[ri*3], values[ri*3+1], values[ri*3+2]]; }
 function getCol(ci) { return [values[ci], values[ci+3], values[ci+6]]; }
@@ -22,11 +60,11 @@ function setCol(ci, col) {
     values[ci+3] = col[1];
     values[ci+6] = col[2];
 }
-function swapCell(c1, c2) {
-    const temp = values[c1];
-    values[c1] = values[c2];
-    values[c2] = temp;
-}
+/* function swapCell(c1, c2) { */
+/*     const temp = values[c1]; */
+/*     values[c1] = values[c2]; */
+/*     values[c2] = temp; */
+/* } */
 function rotRow(ri) {
     const rotated = getRow(ri).slice(1).concat(getRow(ri)[0]);
     setRow(ri, rotated);
@@ -43,7 +81,7 @@ function cellClicked(event) {
 </script>
 
 <div class="container">
-    <div class="button">
+    <div class="center">
         <button on:click={() => stateRowCol = !stateRowCol}>
             {stateRowCol ? "Rotate rows" : "Rotate cols"}
         </button>
@@ -67,6 +105,12 @@ function cellClicked(event) {
         </div>
     </div>
 </div>
+<div class="center">
+{#if done}
+    <h1>Done!</h1>
+    <h3>{doneString}</h3>
+{/if}
+</div>
 
 <style>
 div.container {
@@ -75,7 +119,7 @@ div.container {
     justify-content: center;
 }
 
-div.button {
+div.center {
     width: 100%;
     padding-top: 1rem;
     text-align: center;
