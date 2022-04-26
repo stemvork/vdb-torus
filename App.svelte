@@ -1,7 +1,8 @@
 <script>
 import Cell from './Cell.svelte';
 // TODO: accomodate different grid size, currently: 3x3
-// TODO: implement smarter interface
+// TODO: implement smarter interface: positional click/highlighting
+// TODO: improve visual comprehension of direction/orientation
 
 let stateRowCol = true;
 let stateDirection = false;
