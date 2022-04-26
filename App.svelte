@@ -1,4 +1,5 @@
 <script>
+import Cell from './Cell.svelte';
 // TODO: accomodate different grid size, currently: 3x3
 
 let stateRowCol = true;
@@ -22,19 +23,19 @@ function getCol(grid, ci) { return [grid[ci], grid[ci+3], grid[ci+6]]; }
 
     <div class="grid">
         <div class="row">
-            <div class="cell">{values[0]}</div>
-            <div class="cell">{values[1]}</div>
-            <div class="cell">{values[2]}</div>
+            <Cell value={values[0]} />
+            <Cell value={values[1]} />
+            <Cell value={values[2]} />
         </div>
         <div class="row">
-            <div class="cell">{values[3]}</div>
-            <div class="cell">{values[4]}</div>
-            <div class="cell">{values[5]}</div>
+            <Cell value={values[3]} />
+            <Cell value={values[4]} />
+            <Cell value={values[5]} />
         </div>
         <div class="row">
-            <div class="cell">{values[6]}</div>
-            <div class="cell">{values[7]}</div>
-            <div class="cell">{values[8]}</div>
+            <Cell value={values[6]} />
+            <Cell value={values[7]} />
+            <Cell value={values[8]} />
         </div>
     </div>
 </div>
@@ -63,25 +64,5 @@ div.row {
     display: flex;
     width: 100%;
     justify-content: center;
-}
-
-div.cell {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 1rem;
-    aspect-ratio: 1;
-
-    margin: 0.2rem;
-    padding: 0.5rem;
-
-    border: 1px solid #ccc;
-
-    user-select: none;
-}
-
-div.cell:hover {
-    background-color: #ccc;
 }
 </style>
