@@ -4,102 +4,48 @@ import Cell from './Cell.svelte';
 // TODO: implement smarter interface: positional click/highlighting
 // TODO: improve visual comprehension of direction/orientation
 
-const state = {
-    rowcol: true,
-    direction: false,
-    time: {
-        start: null,
-        end: null
-    }
-};
+import {
+    state,
+    newGrid,
+    shuffle,
+    /* getCol, getRow, */
+    /* setCol, setRow, */
+    rotCol, rotRow,
+    isCorrect,
+    getDoneString,
+} from './utils.js';
 
-function zeroes() { return Array(9).fill(0); }
-// const indexMap = (_, vi) => vi;
-const indicatorMap = (_, vi) => vi+1;
-const values = zeroes().map(indicatorMap);
-const isCorrect = (v, vi) => vi+1 === v;
+const values = newGrid();
+shuffle(values);
 
-function shuffle(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
+let debug = {
+    done: true,
 }
-// shuffle(values);
-function shuffle2() {
-    const colOps = [...Array(3).keys()].map(i => () => rotCol(i));
-    const rowOps = [...Array(3).keys()].map(i => () => rotRow(i));
-    const allOps = [...colOps, ...rowOps];
-    console.log(allOps);
-    for(let i=0; i<10; i++) {
-        const opIndex = Math.floor(Math.random()*6);
-        console.log('op', opIndex);
-        allOps[opIndex]();
-    }
-}
-shuffle2();
 
-let done = false;
-let doneString = 'Time: ';
-$: done = values.every(isCorrect);
+let doneString;
 $: {
-    if(done) {
+    state.done = values.every(isCorrect);
+    debug.done && console.log(`[done = ${state.done}]`, 'after', state.moves, 'moves');
+    if(state.done) {
         state.time.end = Date.now();
-        if((state.time.end-state.time.start)/(60*1000) < 1)
-            doneString += `${Math.floor((state.time.end-state.time.start)/1000)} seconds`;
-        else doneString += `${Math.floor((state.time.end-state.time.start)/(60*1000))} minutes and ${Math.floor((state.time.end-state.time.start)/1000)} seconds`;
+        doneString = getDoneString(state);
     }
 }
 
-function getRow(ri) { return [values[ri*3], values[ri*3+1], values[ri*3+2]]; }
-function getCol(ci) { return [values[ci], values[ci+3], values[ci+6]]; }
-
-function setRow(ri, row) {
-    values[ri*3] = row[0];
-    values[ri*3+1] = row[1];
-    values[ri*3+2] = row[2];
-}
-function setCol(ci, col) {
-    values[ci] = col[0];
-    values[ci+3] = col[1];
-    values[ci+6] = col[2];
-}
-/* function swapCell(c1, c2) { */
-/*     const temp = values[c1]; */
-/*     values[c1] = values[c2]; */
-/*     values[c2] = temp; */
-/* } */
-function rotRow(ri) {
-    let rotated;
-    if(state.direction) {
-        rotated = [getRow(ri)[2]].concat(getRow(ri).slice(0,2));
-    } else {
-        rotated = getRow(ri).slice(1).concat(getRow(ri)[0]);
-    }
-    setRow(ri, rotated);
-}
-function rotCol(ci) {
-    let rotated;
-    if(state.direction) {
-        rotated = [getCol(ci)[2]].concat(getCol(ci).slice(0,2));
-    } else {
-        rotated = getCol(ci).slice(1).concat(getCol(ci)[0]);
-    }
-    setCol(ci, rotated);
-}
 function cellClicked(event) {
     if(state.time.start === null) state.time.start = Date.now();
+    state.moves += 1;
 
     const cellIndex = event.target.getAttribute('data-index');
-    if(state.rowcol) rotRow(Math.floor(cellIndex/3));
-    else rotCol(cellIndex%3);
+
+    if(state.rowcol) rotRow(values, Math.floor(cellIndex/3));
+    else rotCol(values, cellIndex%3);
+    values = values; // force update
 }
 
 document.addEventListener('keydown', e => {
     if(e.key === 'd') state.direction = !state.direction;
-    if(e.key === 'o') state.rowcol = !state.rowcol;
+    if(e.key === ' ') state.rowcol = !state.rowcol;
 })
 </script>
 
@@ -112,7 +58,7 @@ document.addEventListener('keydown', e => {
             {state.direction ? (state.rowcol ? "Rotate right" : "Rotate down") : (state.rowcol ? "Rotate left" : "Rotate up")}
         </button>
         <h3>Press the left button or D to switch direction of the rotation.</h3>
-        <h3>Press the right button or O to switch orientation of the rotation.</h3>
+        <h3>Press the right button or space to switch orientation of the rotation.</h3>
     </div>
 
     <div class="grid" on:click={cellClicked} >
@@ -134,7 +80,7 @@ document.addEventListener('keydown', e => {
     </div>
 </div>
 <div class="center">
-{#if done}
+{#if state.done}
     <h1>Done!</h1>
     <h3>{doneString}</h3>
 {/if}
