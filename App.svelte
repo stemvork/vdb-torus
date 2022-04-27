@@ -4,8 +4,10 @@ import Cell from './Cell.svelte';
 // TODO: implement smarter interface: positional click/highlighting
 // TODO: improve visual comprehension of direction/orientation
 
-let stateRowCol = true;
-let stateDirection = false;
+const state = {
+    rowcol: true,
+    direction: false,
+};
 let startTime = Date.now();
 let endTime = null;
 
@@ -69,7 +71,7 @@ function setCol(ci, col) {
 /* } */
 function rotRow(ri) {
     let rotated;
-    if(stateDirection) {
+    if(state.direction) {
         rotated = [getRow(ri)[2]].concat(getRow(ri).slice(0,2));
     } else {
         rotated = getRow(ri).slice(1).concat(getRow(ri)[0]);
@@ -78,7 +80,7 @@ function rotRow(ri) {
 }
 function rotCol(ci) {
     let rotated;
-    if(stateDirection) {
+    if(state.direction) {
         rotated = [getCol(ci)[2]].concat(getCol(ci).slice(0,2));
     } else {
         rotated = getCol(ci).slice(1).concat(getCol(ci)[0]);
@@ -87,22 +89,22 @@ function rotCol(ci) {
 }
 function cellClicked(event) {
     const cellIndex = event.target.getAttribute('data-index');
-    if(stateRowCol) rotRow(Math.floor(cellIndex/3));
+    if(state.rowcol) rotRow(Math.floor(cellIndex/3));
     else rotCol(cellIndex%3);
 }
 document.addEventListener('keydown', e => {
-    if(e.key === 'd') stateDirection = !stateDirection;
-    if(e.key === 'o') stateRowCol = !stateRowCol;
+    if(e.key === 'd') state.direction = !state.direction;
+    if(e.key === 'o') state.rowcol = !state.rowcol;
 })
 </script>
 
 <div class="container">
     <div class="center">
-        <button on:click={() => stateRowCol = !stateRowCol}>
-            {stateRowCol ? "Rotate rows" : "Rotate cols"}
+        <button on:click={() => state.rowcol = !state.rowcol}>
+            {state.rowcol ? "Rotate rows" : "Rotate cols"}
         </button>
-        <button on:click={() => stateDirection = !stateDirection}>
-            {stateDirection ? (stateRowCol ? "Rotate right" : "Rotate down") : (stateRowCol ? "Rotate left" : "Rotate up")}
+        <button on:click={() => state.direction = !state.direction}>
+            {state.direction ? (state.rowcol ? "Rotate right" : "Rotate down") : (state.rowcol ? "Rotate left" : "Rotate up")}
         </button>
         <h3>Press the left button or D to switch direction of the rotation.</h3>
         <h3>Press the right button or O to switch orientation of the rotation.</h3>
