@@ -7,9 +7,11 @@ import Cell from './Cell.svelte';
 const state = {
     rowcol: true,
     direction: false,
+    time: {
+        start: null,
+        end: null
+    }
 };
-let startTime = Date.now();
-let endTime = null;
 
 function zeroes() { return Array(9).fill(0); }
 // const indexMap = (_, vi) => vi;
@@ -44,10 +46,10 @@ let doneString = 'Time: ';
 $: done = values.every(isCorrect);
 $: {
     if(done) {
-        endTime = Date.now();
-        if((endTime-startTime)/(60*1000) < 1)
-            doneString += `${Math.floor((endTime-startTime)/1000)} seconds`;
-        else doneString += `${Math.floor((endTime-startTime)/(60*1000))} minutes and ${Math.floor((endTime-startTime)/1000)} seconds`;
+        state.time.end = Date.now();
+        if((state.time.end-state.time.start)/(60*1000) < 1)
+            doneString += `${Math.floor((state.time.end-state.time.start)/1000)} seconds`;
+        else doneString += `${Math.floor((state.time.end-state.time.start)/(60*1000))} minutes and ${Math.floor((state.time.end-state.time.start)/1000)} seconds`;
     }
 }
 
@@ -88,10 +90,13 @@ function rotCol(ci) {
     setCol(ci, rotated);
 }
 function cellClicked(event) {
+    if(state.time.start === null) state.time.start = Date.now();
+
     const cellIndex = event.target.getAttribute('data-index');
     if(state.rowcol) rotRow(Math.floor(cellIndex/3));
     else rotCol(cellIndex%3);
 }
+
 document.addEventListener('keydown', e => {
     if(e.key === 'd') state.direction = !state.direction;
     if(e.key === 'o') state.rowcol = !state.rowcol;
