@@ -7,6 +7,9 @@ import Row from './Row.svelte';
 // TODO: accomodate different grid size, currently: 3x3
 // TODO: implement smarter interface: positional click/highlighting
 // TODO: improve visual comprehension of direction/orientation
+// TODO: hide the instructions
+// TODO: improve the visual look of the game
+// TODO: refactor the App component
 
 import {
     state,
