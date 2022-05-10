@@ -10,6 +10,7 @@ import Row from './Row.svelte';
 // TODO: hide the instructions
 // TODO: improve the visual look of the game
 // TODO: refactor the App component
+// TODO: replace buttons by toggles
 
 import {
     state,

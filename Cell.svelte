@@ -17,8 +17,9 @@ div.cell {
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 3rem;
 
-    width: 1rem;
+    width: 4rem;
     aspect-ratio: 1;
 
     margin: 0.2rem;

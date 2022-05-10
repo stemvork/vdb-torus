@@ -5,6 +5,12 @@ export let state;
 <button on:click={() => state.rowcol = !state.rowcol}>
     {state.rowcol ? "Rotate rows" : "Rotate cols"}
 </button>
+<button on:click={() => state.direction = !state.direction}>
+    {state.direction ?
+    (state.rowcol ? "Rotate right" : "Rotate down") :
+    (state.rowcol ? "Rotate left" : "Rotate up")}
+</button>
+<h3>Press the left button or D to switch direction of the rotation.</h3>
 <h3>Press the button or space to switch orientation of the rotation.</h3>
 {#if state.rowcol && state.direction}
     <h1>&rarr;</h1>
@@ -17,7 +23,4 @@ export let state;
 {/if}
 
 <style>
-h1 {
-    font-size: 3rem;
-}
 </style>
