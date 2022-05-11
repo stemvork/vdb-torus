@@ -14,12 +14,11 @@ let i = 0;
 <style>
 h3 {
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 0.5rem;
 }
 div.arrows {
     display: flex;
     margin: 0 auto;
-    padding: 1rem;
     justify-content: center;
     width: fit-content;
     height: fit-content;
@@ -28,15 +27,17 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    font-size: 3rem;
+
+    border: none;
+    border-radius: 10000px;
+    background: transparent;
+
     width: 4rem;
     height: 4rem;
-    margin: 0 1rem;
-    font-size: 3rem;
-    border: none;
-    border-radius: 2rem;
-    background: transparent;
 }
 button.selected {
-    background: #cff;
+    background-color: #cff;
 }
 </style>
