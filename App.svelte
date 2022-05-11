@@ -1,3 +1,6 @@
+<svelte:head>
+    <title>Torus Puzzle</title>
+</svelte:head>
 <script>
 import Center from './Center.svelte';
 import Done from './Done.svelte';
