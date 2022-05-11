@@ -79,7 +79,7 @@ function rotCol(grid, ci) {
 function getDoneString(state) {
     const timeElapsed = state.time.end-state.time.start;
     const minsElapsed = Math.floor(timeElapsed / (60*1000));
-    const secsElapsed = Math.floor((timeElapsed - minsElapsed*60)/1000);
+    const secsElapsed = Math.floor((timeElapsed - minsElapsed*60*1000)/1000);
     const timeString = minsElapsed > 0 ?
         `${minsElapsed} minutes and ${secsElapsed} seconds.` :
         `${secsElapsed} seconds.`;
