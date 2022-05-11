@@ -1,25 +1,42 @@
 <script>
 export let state;
+let i = 0;
 </script>
 
-<button on:click={() => state.rowcol = !state.rowcol}>
-    {state.rowcol ? "Rotate rows" : "Rotate cols"}
-</button>
-<h3>Press the button or space to switch orientation of the rotation.</h3>
-<button class="selected">&larr;</button>
-<button>&uarr;</button>
-<button>&rarr;</button>
-<button>&darr;</button>
+<h3>CONTROLS:</h3>
+<div class="arrows">
+    <button class:selected={i==0} on:click={() => { i = 0; state.rowcol = true; state.direction = false; }}>&larr;</button>
+    <button class:selected={i==1} on:click={() => { i = 1; state.rowcol = false; state.direction = false; }}>&uarr;</button>
+    <button class:selected={i==2} on:click={() => { i = 2; state.rowcol = true; state.direction = true; }}>&rarr;</button>
+    <button class:selected={i==3} on:click={() => { i = 3; state.rowcol = false; state.direction = true; }}>&darr;</button>
+</div>
 
 <style>
+h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+div.arrows {
+    display: flex;
+    margin: 0 auto;
+    padding: 1rem;
+    justify-content: center;
+    width: fit-content;
+    height: fit-content;
+}
 button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    margin: 0 1rem;
     font-size: 3rem;
     border: none;
+    border-radius: 2rem;
     background: transparent;
 }
-
 button.selected {
     background: #cff;
-    border-radius: 50%;
 }
 </style>
