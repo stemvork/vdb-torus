@@ -6,18 +6,20 @@ export let state;
     {state.rowcol ? "Rotate rows" : "Rotate cols"}
 </button>
 <h3>Press the button or space to switch orientation of the rotation.</h3>
-{#if state.rowcol && state.direction}
-    <h1>&rarr;</h1>
-{:else if state.rowcol && !state.direction}
-    <h1>&larr;</h1>
-{:else if !state.rowcol && state.direction}
-    <h1>&darr;</h1>
-{:else}
-    <h1>&uarr;</h1>
-{/if}
+<button class="selected">&larr;</button>
+<button>&uarr;</button>
+<button>&rarr;</button>
+<button>&darr;</button>
 
 <style>
-h1 {
+button {
     font-size: 3rem;
+    border: none;
+    background: transparent;
+}
+
+button.selected {
+    background: #cff;
+    border-radius: 50%;
 }
 </style>
